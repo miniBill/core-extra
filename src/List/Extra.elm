@@ -1006,7 +1006,7 @@ This is equivalent to `List.filter (not << predicate) list`.
 -}
 removeWhen : (a -> Bool) -> List a -> List a
 removeWhen pred list =
-    List.filter (not << pred) list
+    List.filter (\x -> not (pred x)) list
 
 
 {-| Take a list and a list of lists, insert that list between every list in the list of lists, concatenate the result. `intercalate xs xss` is equivalent to `concat (intersperse xs xss)`.
@@ -1560,7 +1560,7 @@ splitWhen predicate list =
 
 -}
 takeWhileRight : (a -> Bool) -> List a -> List a
-takeWhileRight p =
+takeWhileRight p xs =
     let
         step x ( xs, free ) =
             if p x && free then
@@ -1569,7 +1569,7 @@ takeWhileRight p =
             else
                 ( xs, False )
     in
-    Tuple.first << List.foldr step ( [], True )
+    Tuple.first (List.foldr step ( [], True ) xs)
 
 
 {-| Drop elements from the right, while predicate still holds.
